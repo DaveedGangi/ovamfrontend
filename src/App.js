@@ -1,23 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import { FaGithub, FaGitlab, FaBitbucket, FaCloud } from "react-icons/fa";
 
 function App() {
+  const [activeTab, setActiveTab] = useState("saas");
+
+  const handleLogin = (provider) => {
+    window.location.href = `http://localhost:5000/auth/${provider}`;
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="container">
+      <div className="logo">🟠</div>
+      <h1 className="title">ovam ai</h1>
+      <h2 className="subtitle">Welcome to ovam ai</h2>
+      <p className="description">
+        Get a 14-day free trial for your entire team by signing up with your Git provider.
+      </p>
+
+      <div className="tab-container">
+        <button
+          className={activeTab === "saas" ? "tab active" : "tab"}
+          onClick={() => setActiveTab("saas")}
         >
-          Learn React
-        </a>
-      </header>
+          SaaS
+        </button>
+        <button
+          className={activeTab === "self" ? "tab active" : "tab"}
+          onClick={() => setActiveTab("self")}
+        >
+          Self-Hosted
+        </button>
+      </div>
+
+      <div className="button-container">
+        <button onClick={() => handleLogin("github")}>
+          <FaGithub className="icon" /> Sign up with GitHub
+        </button>
+        <button onClick={() => handleLogin("gitlab")}>
+          <FaGitlab className="icon" /> Sign up with GitLab
+        </button>
+        <button onClick={() => handleLogin("azure")}>
+          <FaCloud className="icon" /> Sign up with Azure DevOps
+        </button>
+        <button onClick={() => handleLogin("bitbucket")}>
+          <FaBitbucket className="icon" /> Sign up with Bitbucket Cloud
+        </button>
+      </div>
+
+      <p className="footer">
+        By continuing, you agree to the <a href="/terms">Terms of Use</a> and <a href="/privacy">Privacy Policy</a> applicable to CodeRabbit.
+      </p>
     </div>
   );
 }
