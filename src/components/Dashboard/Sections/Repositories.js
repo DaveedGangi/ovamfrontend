@@ -14,54 +14,59 @@ const Repository = () => {
     const fetchRepos = async () => {
       if (!accessToken || !provider) return;
 
-      let url = "";
       let headers = {
-        Authorization: `Bearer ${accessToken}`
+        Authorization: `Bearer ${accessToken}`,
       };
 
-      switch (provider) {
-        case "github":
-          url = "https://api.github.com/user/repos";
-          headers.Accept = "application/vnd.github+json";
-          break;
-        case "gitlab":
-          url = "https://gitlab.com/api/v4/projects?membership=true";
-          break;
-        case "bitbucket":
-          url = "https://api.bitbucket.org/2.0/repositories?role=member";
-          break;
-        case "azure":
-          url = "https://dev.azure.com/YOUR_ORG/_apis/projects?api-version=6.0";
-          break;
-        default:
-          console.warn("Unsupported provider:", provider);
-          return;
-      }
+      let allRepos = [];
 
       try {
-        const res = await fetch(url, { headers });
-        const data = await res.json();
-
-        let repos = [];
-
         if (provider === "github") {
-          repos = data.map(repo => ({
-            name: repo.name,
-            public: !repo.private
-          }));
+          headers.Accept = "application/vnd.github+json";
+          let page = 1;
+          let hasNext = true;
+
+          while (hasNext) {
+            const res = await fetch(`https://api.github.com/user/repos?per_page=100&page=${page}`, {
+              headers,
+            });
+
+            const data = await res.json();
+
+            if (!Array.isArray(data)) throw new Error("GitHub API error");
+
+            const pageRepos = data.map(repo => ({
+              name: repo.name,
+              public: !repo.private,
+            }));
+
+            allRepos = [...allRepos, ...pageRepos];
+
+            if (data.length < 100) hasNext = false;
+            else page++;
+          }
+
         } else if (provider === "gitlab") {
-          repos = data.map(repo => ({
+          const res = await fetch("https://gitlab.com/api/v4/projects?membership=true&per_page=100", {
+            headers,
+          });
+          const data = await res.json();
+          allRepos = data.map(repo => ({
             name: repo.name,
-            public: repo.visibility === "public"
+            public: repo.visibility === "public",
           }));
         } else if (provider === "bitbucket") {
-          repos = (data.values || []).map(repo => ({
+          const res = await fetch("https://api.bitbucket.org/2.0/repositories?role=member", {
+            headers,
+          });
+          const data = await res.json();
+          allRepos = (data.values || []).map(repo => ({
             name: repo.name,
-            public: !repo.is_private
+            public: !repo.is_private,
           }));
         }
 
-        setRepositories(repos);
+        setRepositories(allRepos);
       } catch (error) {
         console.error("❌ Failed to fetch repositories:", error);
       }
@@ -70,12 +75,10 @@ const Repository = () => {
     fetchRepos();
   }, []);
 
-  // Reset page when search term changes
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);
 
-  // Apply filter first, then paginate
   const filteredRepos = repositories.filter(repo =>
     repo.name.toLowerCase().includes(searchTerm.toLowerCase())
   );

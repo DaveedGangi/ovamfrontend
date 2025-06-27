@@ -134,6 +134,7 @@ const Sidebar = ({ user, activeSection, setActiveSection, collapsed, setCollapse
           <div className="footer-role">role</div>
         </div>
       </div>
+      
     </div>
   );
 };

@@ -16,7 +16,7 @@ function SignupPage() {
   }, [history]);
 
   const handleLogin = (provider) => {
-    window.location.href = `http://localhost:5000/auth/${provider}`;
+    window.location.href = `http://localhost:5000/auth/${provider}?prompt=login`;
   };
 
   return (

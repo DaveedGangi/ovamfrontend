@@ -23,31 +23,41 @@ const DashboardContent = () => {
         let allRepos = [];
 
         if (provider === 'github') {
-          const res = await fetch('https://api.github.com/user/repos?per_page=100', {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          let page = 1;
+          let fetchedRepos = [];
 
-          if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
-          allRepos = await res.json();
+          do {
+            const res = await fetch(`https://api.github.com/user/repos?per_page=100&page=${page}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
 
-          const totalStars = allRepos.reduce((acc, r) => acc + (r.stargazers_count || 0), 0);
-          const totalForks = allRepos.reduce((acc, r) => acc + (r.forks_count || 0), 0);
-          const repoNames = allRepos.map(r => r.name);
-
-          setRepositories(repoNames);
-
-          setStats({
-            totalRepos: allRepos.length,
-            stars: totalStars,
-            forks: totalForks,
-            comments: 0,
-            accepted: 0,
-            learningsUsed: 0,
-            learningsCreated: 0,
-          });
+            if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+            fetchedRepos = await res.json();
+            allRepos = [...allRepos, ...fetchedRepos];
+            page++;
+          } while (fetchedRepos.length === 100);
         }
 
-        // TODO: Add similar logic for GitLab, Azure, Bitbucket
+        const totalStars = allRepos.reduce((acc, r) => acc + (r.stargazers_count || 0), 0);
+        const totalForks = allRepos.reduce((acc, r) => acc + (r.forks_count || 0), 0);
+
+        // Use id as key and display full name (owner/repo) for uniqueness
+        const repoNames = allRepos.map(r => ({
+          id: r.id,
+          name: `${r.owner.login}/${r.name}`,
+        }));
+
+        setRepositories(repoNames);
+
+        setStats({
+          totalRepos: allRepos.length,
+          stars: totalStars,
+          forks: totalForks,
+          comments: 0,
+          accepted: 0,
+          learningsUsed: 0,
+          learningsCreated: 0,
+        });
 
       } catch (err) {
         console.error('❌ Error fetching dashboard stats:', err);
@@ -87,8 +97,10 @@ const DashboardContent = () => {
           <label>Repository Name</label>
           <select value={repositoryFilter} onChange={(e) => setRepositoryFilter(e.target.value)}>
             <option value="All">All</option>
-            {repositories.map((name) => (
-              <option key={name} value={name}>{name}</option>
+            {repositories.map((repo) => (
+              <option key={repo.id} value={repo.name}>
+                {repo.name}
+              </option>
             ))}
           </select>
         </div>
