@@ -121,7 +121,22 @@
   align-items: center;
   padding: 0.8rem 0;
   border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  margin-bottom: 0.7rem;
+  
+  
+
 }
+.repo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
 
 .repo-info {
   display: flex;
@@ -143,15 +158,39 @@
 .repo-name:hover {
   text-decoration: underline;
 }
-
 .public-tag {
   background-color: #dbeafe;
   color: #1d4ed8;
   font-size: 0.75rem;
   padding: 0.25rem 0.6rem;
   border-radius: 12px;
-  font-weight: 500;
+  font-weight: bold; /* Keep this */
+  margin-left: 8px;
 }
+
+.private-tag {
+  background-color: #0f172a;
+  color: red;
+  font-weight: bold; /* Keep this */
+  margin-left: 8px;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+}
+
+
+.repo-link {
+  text-decoration: underline;
+  color: #1e40af; /* Blue-800 */
+  margin-left: 8px;
+  transition: color 0.2s ease;
+}
+
+.repo-link:hover {
+  color: #2563eb; /* Blue-600 */
+}
+
+
 
 .no-results {
   display: flex;

@@ -1,0 +1,105 @@
+
+
+
+
+.repo-explorer {
+  background-color: #0f172a;
+  color: #e2e8f0;
+  padding: 1.5rem;
+  border-radius: 10px;
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 500px;
+}
+
+.back-btn,
+.back-folder-btn,
+.download-zip-btn {
+  background-color: #1e293b;
+  color: #f1f5f9;
+  border: none;
+  padding: 8px 14px;
+  margin-right: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.back-btn:hover,
+.back-folder-btn:hover,
+.download-zip-btn:hover {
+  background-color: #334155;
+}
+
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.file-list li {
+  padding: 10px 12px;
+  background-color: #1e293b;
+  margin: 6px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.file-list li:hover {
+  background-color: #334155;
+}
+
+.file-viewer {
+  margin-top: 20px;
+  background-color: #1e293b;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.file-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.file-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.file-header button {
+  background-color: #0ea5e9;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.file-header button:hover {
+  background-color: #0284c7;
+}
+
+.status-bar {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.error {
+  color: #f87171;
+  margin-top: 10px;
+}
+
+
+
+
+
+.pr-info {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 14px;
+  color: #cbd5e1;
+}

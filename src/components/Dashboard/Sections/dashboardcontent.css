@@ -1315,3 +1315,30 @@ html, body {
 
 
 
+
+
+
+
+
+
+.file-card {
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  background: #fff;
+}
+
+.file-card h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.file-card pre {
+  background: #f8f8f8;
+  padding: 10px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.5;
+}
